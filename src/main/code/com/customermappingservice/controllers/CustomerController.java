@@ -9,9 +9,7 @@ import com.google.gson.Gson;
 import spark.Request;
 import spark.Response;
 import spark.Route;
-
 import io.jsondb.JsonDBTemplate;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -35,6 +33,7 @@ public class CustomerController {
                 if (!ApiUtils.customerCollectionExists(jsonDBTemplate)) {
                     apiResponse.setStatusCode(200);
                     apiResponse.setContent(JsonDBConstants.CUSTOMER_NOT_FOUND);
+                    return gson.toJson(apiResponse);
                 }
 
                 Customer customer = ApiUtils.queryCustomerById(request.queryParams("customerId"), jsonDBTemplate);
