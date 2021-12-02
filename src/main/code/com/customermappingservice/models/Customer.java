@@ -1,11 +1,20 @@
-package com.customermappingservice;
+package com.customermappingservice.models;
 
 import java.util.Date;
 
+import io.jsondb.annotation.Document;
+import io.jsondb.annotation.Id;
+
+@Document(collection = "customers", schemaVersion= "1.0")
 public class Customer {
+
+    @Id
     private int customerId;
     private String externalId;
     private Date createdAt;
+
+    //@Secret
+    //private String privateKey;
 
     public int getCustomerId() {
         return customerId;
