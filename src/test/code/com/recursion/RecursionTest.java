@@ -7,7 +7,8 @@ public class RecursionTest {
 
     @Test
     public void testCollatzRecursion() {
-        Recursion.collatzRecursion(6255042);
+        int num = Recursion.collatzRecursion(6255042);
+        assert num == 1;
     }
 
     @Test

@@ -16,5 +16,6 @@ public class JsonDBConstants {
     public static final String CREATE_AT_FORMAT_ERROR = "CreatedAt must be in date format (yyyy-mm-dd)";
     public static final String CREATE_AT_MUST_NOT_BE_FUTURE = "CreatedAt must not be a future date.";
     public static final String CUSTOMER_NOT_FOUND = "Customer not found from the id provided";
+    public static final String CUSTOMER_ALREADY_EXISTS = "Customer already exists with that id";
 }
 

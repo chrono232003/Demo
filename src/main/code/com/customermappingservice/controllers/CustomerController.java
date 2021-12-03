@@ -6,12 +6,14 @@ import com.customermappingservice.models.ApiRequest;
 import com.customermappingservice.models.ApiResponse;
 import com.customermappingservice.models.Customer;
 import com.google.gson.Gson;
+import io.jsondb.InvalidJsonDbApiUsageException;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 import io.jsondb.JsonDBTemplate;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.UUID;
 
 public class CustomerController {
 
@@ -27,7 +29,6 @@ public class CustomerController {
             apiResponse.setStatusCode(400);
             apiResponse.setContent(JsonDBConstants.MISSING_CUSTOMER_ID);
         } else {
-
             try {
                 JsonDBTemplate jsonDBTemplate = new JsonDBTemplate(JsonDBConstants.JSONDB_DBFILESLOCATION, JsonDBConstants.JSONDB_BASEMODELSPACKAGE, null);
                 if (!ApiUtils.customerCollectionExists(jsonDBTemplate)) {
@@ -104,8 +105,6 @@ public class CustomerController {
     //HELPERS
     private static ApiResponse handleDataStore(ApiRequest requestBody) throws ParseException {
 
-        //Optionally a Cipher object if you need Encryption
-        //ICipher cipher = new Default1Cipher("1r8+24pibarAWgS85/Heeg==");
         ApiResponse apiResponse = new ApiResponse();
         JsonDBTemplate jsonDBTemplate = new JsonDBTemplate(JsonDBConstants.JSONDB_DBFILESLOCATION, JsonDBConstants.JSONDB_BASEMODELSPACKAGE, null);
 
@@ -122,9 +121,15 @@ public class CustomerController {
         customer.setCreatedAt(new SimpleDateFormat("yyyy-MM-dd").parse(requestBody.createdAt));
 
         customer.setCustomerId(Integer.parseInt(requestBody.customerId));
-        customer.setExternalId("external-" + requestBody.customerId);
+        customer.setExternalId(UUID.randomUUID().toString());
 
-        jsonDBTemplate.insert(customer);
+        try {
+            jsonDBTemplate.insert(customer);
+        } catch (InvalidJsonDbApiUsageException invalidJsonDbApiUsageException) {
+            apiResponse.setStatusCode(400);
+            apiResponse.setContent(JsonDBConstants.CUSTOMER_ALREADY_EXISTS);
+            return apiResponse;
+        }
 
         apiResponse.setStatusCode(201);
         apiResponse.setContent(JsonDBConstants.CUSTOMER_UPLOAD_SUCCESS + requestBody.customerId);

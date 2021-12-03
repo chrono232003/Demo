@@ -107,7 +107,7 @@ public class AppTest {
         Gson gson = new Gson();
         ApiResponse apiResponse = gson.fromJson(response1.body(), ApiResponse.class);
         assert apiResponse.getStatusCode() == 200;
-        assert apiResponse.getContent().equals("External ID: external-9876");
+        assert !apiResponse.getContent().equals("");
 
         //drop the collection created for the test
         JsonDBTemplate jsonDBTemplate = new JsonDBTemplate(JsonDBConstants.JSONDB_DBFILESLOCATION, JsonDBConstants.JSONDB_BASEMODELSPACKAGE, null);

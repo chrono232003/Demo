@@ -1,0 +1,44 @@
+Exercise 1 -  Collatz Recursion:
+
+  Following the exercise requirements and comments, I came up with the following conclusion:
+
+  The function should be written similar to the while loop example. It should start by printing the current iteration number value and then handling the recusive logic of recalling the function differently if the number is currently odd or even. I also noticed the mention of writing the recursive function to have no more than one return statement.
+
+  For a, I returned the logic in a single turnary statement.
+  For b, To make it truly tail recursive, I rewrote the function to always call the function back at the very end. The return statement happens at the beginning of the next loop if the number happens to be 1.
+
+  I only handled integers meaning that if a number is passed in that is large, the function will throw an error that the integer is too large. Also, I did not consider negative numbers for this exercise. For negative numbers, I would write separate logic to handle those.
+
+
+Excercise 2 -  Dot Product:
+
+  I used a class IntStream which has the range, map and reduce methods built in fluently so that this logic could be reduced to one line.
+
+  The method I wrote handles 2 vectors of the same size. I understand that there would need to be some extra logic around the mapping if they were 2 different sizes. I also assumed that the 2 vectors passed in contained only integers.
+
+  For the range element, I used the first vector length only as there is the assumption that both integers are the same size.
+
+
+Exercise 3 - Customer Mapping Service:
+
+  There are many different options in Java for servers as well as databases. I decided to focus on lightweight libraries so that I could focus more on building the API vs the setup and configuration that comes with larger frameworks such as Spring. I also decided that the libraries needed the dependencies to be available via Maven so that setup of the project would be easier for a user pulling down the project.
+
+  Server - I decided to use Spark.java as the configuration is very simple and the server can be started and stopped programmatically for unit tests.
+  Database - I used a collection based database called jsondb since it is lightweight, easy to use and can be imported into the project with a simple Maven build.
+
+  I wanted to model the database for easy readability, so I structured the API as follows:
+
+  API
+    - apiutils
+    - controllers
+    - constants
+    - models
+    Application.java
+
+  The entry point to the application and the server are in the application.main() method. I decided to have a controller class handle each endpoint request separately. I created models for the customer and also for the request and response objects. That way, structure is enforced and it makes it easier to handle incorrect requests. There are constants for both the endpoints and JsonDB strings such as API responses etc. That way, the responses are standardized and can be reused with out worrying about deviation.
+
+  I created simple endpoints (getcustomer, postcustomer) which consume the required params/
+
+  Lastly, I imported the Gson package for easy serialization of the request and response from models to json strings and vise versa.
+
+

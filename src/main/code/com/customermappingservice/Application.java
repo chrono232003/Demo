@@ -9,13 +9,13 @@ public class Application {
 
     public static void main(String[] args) {
 
-        // Configure Spark
+        // Configure the server
         port(4568);
 
         //Routes
         get(Path.GETCUSTOMER,         CustomerController.handleGetCustomer);
-        post(Path.POSTCUSTOMER,         CustomerController.handlePostCustomer);
-        get("*",                     CustomerController.notFound);
+        post(Path.POSTCUSTOMER,       CustomerController.handlePostCustomer);
+        get("*",                 CustomerController.notFound);
 
     }
 

@@ -7,14 +7,9 @@ public class Recursion {
      * @param num
      */
 
-    public static void collatzRecursion(int num) {
+    public static int collatzRecursion(int num) {
         System.out.println(num);
-        if (num == 1) {return;}
-        if (num % 2 == 0) {
-            collatzRecursion(3*num+1);
-        } else {
-            collatzRecursion(num/2);
-        }
+        return num == 1 ? 1 : (num % 2 == 0) ? collatzRecursion(3*num+1) : collatzRecursion(num/2);
     }
 
     /**
