@@ -17,6 +17,8 @@ import java.util.UUID;
 
 public class CustomerController {
 
+    Gson gson = new Gson();
+
     /**
      * Accept a customerId query string and return the customer externalId
      */
