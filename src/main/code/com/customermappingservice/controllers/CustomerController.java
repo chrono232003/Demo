@@ -17,8 +17,6 @@ import java.util.UUID;
 
 public class CustomerController {
 
-    Gson gson = new Gson();
-
     /**
      * Accept a customerId query string and return the customer externalId
      */
@@ -42,7 +40,7 @@ public class CustomerController {
                 Customer customer = ApiUtils.queryCustomerById(request.queryParams("customerId"), jsonDBTemplate);
                 if (customer != null) {
                     apiResponse.setStatusCode(200);
-                    apiResponse.setContent("External ID: " + customer.getExternalId());
+                    apiResponse.setContent("External ID: " + customer.getCustomerId());
                 } else {
                     apiResponse.setContent(JsonDBConstants.CUSTOMER_NOT_FOUND);
                 }
@@ -72,14 +70,23 @@ public class CustomerController {
 
             ApiRequest apiRequest = gson.fromJson(request.body(), ApiRequest.class);
 
-
-            if (apiRequest.customerId == null) {
+//            if (apiRequest.customerId == null) {
+//                apiResponse.setStatusCode(400);
+//                apiResponse.setContent(JsonDBConstants.MISSING_CUSTOMER_ID);
+//                return gson.toJson(apiResponse);
+//            } else if (apiRequest.createdAt == null) {
+//                apiResponse.setStatusCode(400);
+//                apiResponse.setContent(JsonDBConstants.MISSING_CREATED_AT);
+//            } else if (apiRequest.firstName == null) {
+            if (apiRequest.firstName == null) {
                 apiResponse.setStatusCode(400);
-                apiResponse.setContent(JsonDBConstants.MISSING_CUSTOMER_ID);
-                return gson.toJson(apiResponse);
-            } else if (apiRequest.createdAt == null) {
+                apiResponse.setContent(JsonDBConstants.MISSING_FIRST_NAME);
+            } else if (apiRequest.lastName == null) {
                 apiResponse.setStatusCode(400);
-                apiResponse.setContent(JsonDBConstants.MISSING_CREATED_AT);
+                apiResponse.setContent(JsonDBConstants.MISSING_LAST_NAME);
+            } else if (apiRequest.email == null) {
+                apiResponse.setStatusCode(400);
+                apiResponse.setContent(JsonDBConstants.MISSING_EMAIL);
             } else {
                 apiResponse = handleDataStore(apiRequest);
             }
@@ -114,16 +121,18 @@ public class CustomerController {
 
         Customer customer = new Customer();
 
-        String isCreatedAtValid = ApiUtils.isDateValidFutureDate(requestBody.createdAt);
+        String isCreatedAtValid = ApiUtils.isDateValidBirthDate(requestBody.dob);
         if (!isCreatedAtValid.equals("true")) {
             apiResponse.setStatusCode(400);
             apiResponse.setContent(isCreatedAtValid);
             return apiResponse;
         }
         customer.setCreatedAt(new SimpleDateFormat("yyyy-MM-dd").parse(requestBody.createdAt));
-
-        customer.setCustomerId(Integer.parseInt(requestBody.customerId));
-        customer.setExternalId(UUID.randomUUID().toString());
+        customer.setCustomerId(UUID.randomUUID().toString());
+        customer.setFirstName(requestBody.firstName);
+        customer.setLastName(requestBody.lastName);
+        customer.setEmail(requestBody.email);
+        customer.setDob(requestBody.dob);
 
         try {
             jsonDBTemplate.insert(customer);
@@ -134,7 +143,7 @@ public class CustomerController {
         }
 
         apiResponse.setStatusCode(201);
-        apiResponse.setContent(JsonDBConstants.CUSTOMER_UPLOAD_SUCCESS + requestBody.customerId);
+        apiResponse.setContent(JsonDBConstants.CUSTOMER_UPLOAD_SUCCESS + requestBody.firstName + " " + requestBody.lastName);
         return apiResponse;
     }
 

@@ -46,8 +46,9 @@ public class AppTest {
     public void testStoreCustomerSuccess() throws JsonProcessingException, IOException, InterruptedException {
 
         var params = new HashMap<String, String>() {{
-            put("customerId", "9876");
-            put ("createdAt", "2021-11-01");
+            put("firstName", "John");
+            put("lastName", "Smith");
+            put("email", "john.smith@company.com");
         }};
 
         var objectMapper = new ObjectMapper();
@@ -65,7 +66,7 @@ public class AppTest {
 
         //drop the collection created for the test
         JsonDBTemplate jsonDBTemplate = new JsonDBTemplate(JsonDBConstants.JSONDB_DBFILESLOCATION, JsonDBConstants.JSONDB_BASEMODELSPACKAGE, null);
-        CustomerController.dropCollection(jsonDBTemplate);
+        //CustomerController.dropCollection(jsonDBTemplate);
 
         System.out.println(response.body());
         Gson gson = new Gson();

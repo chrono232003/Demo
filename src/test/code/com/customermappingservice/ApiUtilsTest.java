@@ -9,10 +9,10 @@ import org.junit.Test;
 public class ApiUtilsTest {
 
     @Test
-    public void testCheckForFutureDate() throws Exception {
-        assert ApiUtils.isDateValidFutureDate("2021-09-01").equals("true");
-        assert ApiUtils.isDateValidFutureDate("2021-12-07").equals(JsonDBConstants.CREATE_AT_MUST_NOT_BE_FUTURE);
-        assert ApiUtils.isDateValidFutureDate("not a date").equals(JsonDBConstants.CREATE_AT_FORMAT_ERROR);
+    public void testCheckForPastDate() throws Exception {
+        assert ApiUtils.isDateValidBirthDate("2021-09-01").equals("true");
+        assert ApiUtils.isDateValidBirthDate("2021-12-07").equals(JsonDBConstants.CREATE_AT_MUST_NOT_BE_FUTURE);
+        assert ApiUtils.isDateValidBirthDate("not a date").equals(JsonDBConstants.CREATE_AT_FORMAT_ERROR);
     }
 
     @Test
@@ -43,8 +43,8 @@ public class ApiUtilsTest {
         JsonDBTemplate jsonDBTemplate = new JsonDBTemplate(JsonDBConstants.JSONDB_DBFILESLOCATION, JsonDBConstants.JSONDB_BASEMODELSPACKAGE, null);
         jsonDBTemplate.createCollection(Customer.class);
         Customer mockCustomer = new Customer();
-        mockCustomer.setCustomerId(12323);
-        mockCustomer.setExternalId("some external id");
+        mockCustomer.setCustomerId("sdfsdfsdf");
+        //mockCustomer.setExternalId("some external id");
         jsonDBTemplate.insert(mockCustomer);
 
         Customer customer  = ApiUtils.queryCustomerById("12323", jsonDBTemplate);

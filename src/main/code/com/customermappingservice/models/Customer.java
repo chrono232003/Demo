@@ -9,35 +9,53 @@ import io.jsondb.annotation.Id;
 public class Customer {
 
     @Id
-    private int customerId;
-    private String externalId;
-    private Date createdAt;
+    private String customerId;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String dob;
 
     //@Secret
     //private String privateKey;
 
-    public int getCustomerId() {
+    public String getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(int customerId) {
+    public void setCustomerId(String customerId) {
         this.customerId = customerId;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getExternalId() {
-        return externalId;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setExternalId(String externalId) {
-        this.externalId = externalId;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Date getDob() {
+        return dob;
+    }
+
+    public void setDob(Date dob) {
+        this.dob = dob;
     }
 
 }
