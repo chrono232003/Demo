@@ -1,5 +1,6 @@
 package com.customermappingservice.controllers;
 
+import code.com.customermappingservice.models.SetCustomerResponse;
 import com.customermappingservice.apiutils.ApiUtils;
 import com.customermappingservice.constants.JsonDBConstants;
 import com.customermappingservice.models.ApiRequest;
@@ -12,7 +13,7 @@ import spark.Response;
 import spark.Route;
 import io.jsondb.JsonDBTemplate;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.UUID;
 
 public class CustomerController {
@@ -40,7 +41,7 @@ public class CustomerController {
                 Customer customer = ApiUtils.queryCustomerById(request.queryParams("customerId"), jsonDBTemplate);
                 if (customer != null) {
                     apiResponse.setStatusCode(200);
-                    apiResponse.setContent("External ID: " + customer.getCustomerId());
+                    apiResponse.setContent("External ID: " + gson.toJson(customer));
                 } else {
                     apiResponse.setContent(JsonDBConstants.CUSTOMER_NOT_FOUND);
                 }
@@ -70,14 +71,6 @@ public class CustomerController {
 
             ApiRequest apiRequest = gson.fromJson(request.body(), ApiRequest.class);
 
-//            if (apiRequest.customerId == null) {
-//                apiResponse.setStatusCode(400);
-//                apiResponse.setContent(JsonDBConstants.MISSING_CUSTOMER_ID);
-//                return gson.toJson(apiResponse);
-//            } else if (apiRequest.createdAt == null) {
-//                apiResponse.setStatusCode(400);
-//                apiResponse.setContent(JsonDBConstants.MISSING_CREATED_AT);
-//            } else if (apiRequest.firstName == null) {
             if (apiRequest.firstName == null) {
                 apiResponse.setStatusCode(400);
                 apiResponse.setContent(JsonDBConstants.MISSING_FIRST_NAME);
@@ -113,7 +106,7 @@ public class CustomerController {
 
     //HELPERS
     private static ApiResponse handleDataStore(ApiRequest requestBody) throws ParseException {
-
+        Gson gson = new Gson();
         ApiResponse apiResponse = new ApiResponse();
         JsonDBTemplate jsonDBTemplate = new JsonDBTemplate(JsonDBConstants.JSONDB_DBFILESLOCATION, JsonDBConstants.JSONDB_BASEMODELSPACKAGE, null);
 
@@ -127,7 +120,8 @@ public class CustomerController {
             apiResponse.setContent(isCreatedAtValid);
             return apiResponse;
         }
-        customer.setCreatedAt(new SimpleDateFormat("yyyy-MM-dd").parse(requestBody.createdAt));
+        //customer.setDob(new SimpleDateFormat("yyyy-MM-dd").parse(requestBody.createdAt));
+        customer.setDob(requestBody.createdAt);
         customer.setCustomerId(UUID.randomUUID().toString());
         customer.setFirstName(requestBody.firstName);
         customer.setLastName(requestBody.lastName);
@@ -143,7 +137,10 @@ public class CustomerController {
         }
 
         apiResponse.setStatusCode(201);
-        apiResponse.setContent(JsonDBConstants.CUSTOMER_UPLOAD_SUCCESS + requestBody.firstName + " " + requestBody.lastName);
+        //apiResponse.setContent(JsonDBConstants.CUSTOMER_UPLOAD_SUCCESS + requestBody.firstName + " " + requestBody.lastName);
+        SetCustomerResponse setCustomerResponse = new SetCustomerResponse();
+        setCustomerResponse.setCustomerId(customer.getCustomerId());
+        apiResponse.setContent(gson.toJson(setCustomerResponse));
         return apiResponse;
     }
 

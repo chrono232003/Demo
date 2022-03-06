@@ -1,6 +1,7 @@
 package com.customermappingservice;
 
 
+import code.com.customermappingservice.models.SetCustomerResponse;
 import com.customermappingservice.constants.JsonDBConstants;
 import com.customermappingservice.controllers.CustomerController;
 import com.customermappingservice.models.ApiResponse;
@@ -21,6 +22,7 @@ import java.util.HashMap;
 
 public class AppTest {
 
+    Gson gson = new Gson();
     private static boolean serverStarted = false;
 
     @Before
@@ -49,6 +51,7 @@ public class AppTest {
             put("firstName", "John");
             put("lastName", "Smith");
             put("email", "john.smith@company.com");
+            put("dob", "1983-04-10");
         }};
 
         var objectMapper = new ObjectMapper();
@@ -70,18 +73,20 @@ public class AppTest {
 
         System.out.println(response.body());
         Gson gson = new Gson();
-        ApiResponse apiResponse = gson.fromJson(response.body(), ApiResponse.class);
-        assert apiResponse.getStatusCode() == 201;
-        assert apiResponse.getContent().equals("Customer added to the database with id: 9876");
-
+        ApiResponse postCustomerApiResponse = gson.fromJson(response.body(), ApiResponse.class);
+        SetCustomerResponse setCustomerResponse = gson.fromJson(postCustomerApiResponse.getContent(), SetCustomerResponse.class);
+        assert postCustomerApiResponse.getStatusCode() == 201;
+        assert setCustomerResponse.getCustomerId() != null;
     }
 
     @Test
     public void testGetCustomerSuccess() throws JsonProcessingException, IOException, InterruptedException {
 
-        var params = new HashMap<String, String>() {{
-            put("customerId", "9876");
-            put ("createdAt", "2021-11-01");
+        HashMap params = new HashMap<String, String>() {{
+            put("firstName", "John");
+            put("lastName", "Smith");
+            put("email", "john.smith@company.com");
+            put("dob", "1983-04-10");
         }};
 
         var objectMapper = new ObjectMapper();
@@ -89,16 +94,20 @@ public class AppTest {
                 .writeValueAsString(params);
 
         HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
+        HttpRequest postCustomerRequest = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:4568/postcustomer"))
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
 
-        client.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse postCustomerResponse = client.send(postCustomerRequest, HttpResponse.BodyHandlers.ofString());
+        System.out.println(postCustomerResponse.body());
+        ApiResponse postCustomerApiResponse = gson.fromJson(postCustomerResponse.body().toString(), ApiResponse.class);
+        SetCustomerResponse setCustomerResponse = gson.fromJson(postCustomerApiResponse.getContent(), SetCustomerResponse.class);
 
+        String getRequestURL = "http://localhost:4568/getcustomer?customerId=" + setCustomerResponse.getCustomerId();
         HttpClient client1 = HttpClient.newHttpClient();
         HttpRequest request1 = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:4568/getcustomer?customerId=9876"))
+                .uri(URI.create(getRequestURL))
                 .build();
 
         HttpResponse<String> response1 = client1.send(request1,
@@ -136,11 +145,13 @@ public class AppTest {
     }
 
     @Test
-    public void testPostFailBadCreatedAtFormat() throws IOException, InterruptedException {
+    public void testPostFailBadFirstNameFormat() throws IOException, InterruptedException {
 
         var params = new HashMap<String, String>() {{
-            put("customerId", "9876");
-            put ("createdAt", "not a date");
+            put("firstName", "John23423;");
+            put("lastName", "Smith");
+            put("email", "john.smith@company.com");
+            put("dob", "1983-04-10");
         }};
 
         var objectMapper = new ObjectMapper();

@@ -3,6 +3,7 @@ package com.customermappingservice.apiutils;
 import com.customermappingservice.constants.JsonDBConstants;
 import com.customermappingservice.models.Customer;
 import io.jsondb.JsonDBTemplate;
+import org.apache.commons.validator.routines.EmailValidator;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -51,8 +52,8 @@ public class ApiUtils {
     }
 
     public static String isEmailValid(String email) {
-        String checkExp = "^[^[a-zA-Z0-9_+&*-]+(?:\\\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\\\.)+[a-zA-Z]{2,7}$\\s]+";
-        return email.matches(checkExp) ? "true" : JsonDBConstants.EMAIL_INVALID_FORMAT;
+        boolean isEmailValid = EmailValidator.getInstance().isValid(email);
+        return isEmailValid ? "true" : JsonDBConstants.EMAIL_INVALID_FORMAT;
     }
 
 
