@@ -13,7 +13,6 @@ import spark.Response;
 import spark.Route;
 import io.jsondb.JsonDBTemplate;
 import java.text.ParseException;
-import java.util.HashMap;
 import java.util.UUID;
 
 public class CustomerController {
@@ -31,6 +30,8 @@ public class CustomerController {
             apiResponse.setContent(JsonDBConstants.MISSING_CUSTOMER_ID);
         } else {
             try {
+
+                //TODO encrypt the DB!
                 JsonDBTemplate jsonDBTemplate = new JsonDBTemplate(JsonDBConstants.JSONDB_DBFILESLOCATION, JsonDBConstants.JSONDB_BASEMODELSPACKAGE, null);
                 if (!ApiUtils.customerCollectionExists(jsonDBTemplate)) {
                     apiResponse.setStatusCode(200);
@@ -41,7 +42,7 @@ public class CustomerController {
                 Customer customer = ApiUtils.queryCustomerById(request.queryParams("customerId"), jsonDBTemplate);
                 if (customer != null) {
                     apiResponse.setStatusCode(200);
-                    apiResponse.setContent("External ID: " + gson.toJson(customer));
+                    apiResponse.setContent(gson.toJson(customer));
                 } else {
                     apiResponse.setContent(JsonDBConstants.CUSTOMER_NOT_FOUND);
                 }
@@ -151,7 +152,6 @@ public class CustomerController {
         }
 
         apiResponse.setStatusCode(201);
-        //apiResponse.setContent(JsonDBConstants.CUSTOMER_UPLOAD_SUCCESS + requestBody.firstName + " " + requestBody.lastName);
         SetCustomerResponse setCustomerResponse = new SetCustomerResponse();
         setCustomerResponse.setCustomerId(customer.getCustomerId());
         apiResponse.setContent(gson.toJson(setCustomerResponse));
