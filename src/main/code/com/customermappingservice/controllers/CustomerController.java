@@ -135,7 +135,7 @@ public class CustomerController {
         }
 
         //customer.setDob(new SimpleDateFormat("yyyy-MM-dd").parse(requestBody.createdAt));
-        customer.setDob(requestBody.createdAt);
+        customer.setDob(requestBody.dob);
         customer.setCustomerId(UUID.randomUUID().toString());
         customer.setFirstName(requestBody.firstName);
         customer.setLastName(requestBody.lastName);
