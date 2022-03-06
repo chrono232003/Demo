@@ -1,27 +1,17 @@
-# Alpian
+# Customer Store Demo
 
 ## Overview
-This repository contains 3 coding exercises that all live under the **src.main** folder in the repository. There are unit tests for each of these exercises that live in the respective **src.test** folder.
+This repository contains a simple customer REST API that all live under the **src.main** folder in the repository. There are unit tests for that live in the respective **src.test** folder.
 
 ### Requirements
-The exercises are written in Java and the cloned project will need the following to run:
+The REST API is written in Java and the cloned project will need the following to run:
 
 - Java JDK installed
 - A Java IDE such as Intellij or Eclipse
 - Maven to pull in dependencies
 
 ### Structure
-**Exercise #1**
- - Name: Collatz Recursion
- - Class Path: com.recursion.Recursion
- - Unit Test Class Path: com.recursion.RecursionTest
- 
-**Exercise #2**
-  - Name: Dot Product
-  - Class Path: com.dotproduct.DotProduct
-  - Unit Test Class Path: com.dotproduct.DotProductTest
-  
-**Exercise #3**
+
 - Name: Customer Mapping Service
 - Class Package: com.customermappingservice
 - Main API Class Path: com.customermappingservice.Application
@@ -35,8 +25,7 @@ To run the unit tests:
 3. In the IDE:
    - Mark the src/main folder as the sources folder.
    - Mark the  src/test folder as the test sources folder (So that JUnit will recognize the classes as test classes)
-4. navigate to the respective test folders for the exercises (Shown below in Structure), and run the unit tests.  
- - For both Collatz Recursion and Dot Product, there is one test suite under the respective packages.
+4. navigate to the respective test folders for the exercises (Shown below in Structure), and run the unit tests.
  - For  the Customer Mapping Service, there are 2 tests under the package:
     
     - AppUtilsTest which tests some of the utility methods such as validating a date etc.

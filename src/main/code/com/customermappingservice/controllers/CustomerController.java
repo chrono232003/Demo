@@ -120,6 +120,20 @@ public class CustomerController {
             apiResponse.setContent(isCreatedAtValid);
             return apiResponse;
         }
+
+        String isFirstNameValid = ApiUtils.isNameValid(requestBody.firstName);
+        if (!isFirstNameValid.equals("true")) {
+            apiResponse.setStatusCode(400);
+            apiResponse.setContent(isFirstNameValid);
+            return apiResponse;
+        }
+        String isLastNameValid = ApiUtils.isNameValid(requestBody.lastName);
+        if (!isLastNameValid.equals("true")) {
+            apiResponse.setStatusCode(400);
+            apiResponse.setContent(isLastNameValid);
+            return apiResponse;
+        }
+
         //customer.setDob(new SimpleDateFormat("yyyy-MM-dd").parse(requestBody.createdAt));
         customer.setDob(requestBody.createdAt);
         customer.setCustomerId(UUID.randomUUID().toString());

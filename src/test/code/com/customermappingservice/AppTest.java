@@ -1,4 +1,4 @@
-package com.customermappingservice;
+package code.com.customermappingservice;
 
 
 import code.com.customermappingservice.models.SetCustomerResponse;
@@ -34,14 +34,14 @@ public class AppTest {
 
         //Start server
         String[] args = {"tst"};
-        Application.main(args);
+        com.customermappingservice.Application.main(args);
         serverStarted = true;
     }
 
     @After
     public void exit() {
         //stop server
-        Application.stopServer();
+        com.customermappingservice.Application.stopServer();
     }
 
     @Test
@@ -148,7 +148,7 @@ public class AppTest {
     public void testPostFailBadFirstNameFormat() throws IOException, InterruptedException {
 
         var params = new HashMap<String, String>() {{
-            put("firstName", "John23423;");
+            put("firstName", "John#$%#$23423;");
             put("lastName", "Smith");
             put("email", "john.smith@company.com");
             put("dob", "1983-04-10");
@@ -175,8 +175,7 @@ public class AppTest {
         Gson gson = new Gson();
         ApiResponse apiResponse = gson.fromJson(response.body(), ApiResponse.class);
         assert apiResponse.getStatusCode() == 400;
-        assert apiResponse.getContent().equals("CreatedAt must be in date format (yyyy-mm-dd)");
-
+        assert apiResponse.getContent().equals("The provided name is in an invalid format");
     }
 
 }
