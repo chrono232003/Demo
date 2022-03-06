@@ -75,6 +75,7 @@ public class AppTest {
         Gson gson = new Gson();
         ApiResponse postCustomerApiResponse = gson.fromJson(response.body(), ApiResponse.class);
         SetCustomerResponse setCustomerResponse = gson.fromJson(postCustomerApiResponse.getContent(), SetCustomerResponse.class);
+        assert response.statusCode() == 201;
         assert postCustomerApiResponse.getStatusCode() == 201;
         assert setCustomerResponse.getCustomerId() != null;
     }
@@ -116,6 +117,7 @@ public class AppTest {
         System.out.println(response1.body());
         Gson gson = new Gson();
         ApiResponse apiResponse = gson.fromJson(response1.body(), ApiResponse.class);
+        assert response1.statusCode() == 200;
         assert apiResponse.getStatusCode() == 200;
         assert !apiResponse.getContent().equals("");
 
@@ -140,6 +142,7 @@ public class AppTest {
         System.out.println(response.body());
         Gson gson = new Gson();
         ApiResponse apiResponse = gson.fromJson(response.body(), ApiResponse.class);
+        assert response.statusCode() == 400;
         assert apiResponse.getStatusCode() == 400;
         assert apiResponse.getContent().equals("missing request body");
     }
@@ -174,6 +177,7 @@ public class AppTest {
         System.out.println(response.body());
         Gson gson = new Gson();
         ApiResponse apiResponse = gson.fromJson(response.body(), ApiResponse.class);
+        assert response.statusCode() == 400;
         assert apiResponse.getStatusCode() == 400;
         assert apiResponse.getContent().equals("The provided name is in an invalid format");
     }
