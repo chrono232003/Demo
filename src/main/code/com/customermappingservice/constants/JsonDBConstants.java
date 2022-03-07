@@ -15,7 +15,7 @@ public class JsonDBConstants {
     public static final String MISSING_LAST_NAME = "missing last name";
     public static final String MISSING_EMAIL = "missing email";
     public static final String INTERNAL_SERVER_ERROR = "internal server error";
-    public static final String INVALID_ENDPOINT = "invalid endpoint";
+    public static final String INVALID_ENDPOINT = "page not found";
     public static final String DOB_FORMAT_ERROR = "Date of birth must be in date format (yyyy-mm-dd)";
     public static final String DOB_MUST_NOT_BE_FUTURE = "Date of birth must not be a future date.";
     public static final String DOB_MUST_BE_18 = "Date of birth must not be a future date.";

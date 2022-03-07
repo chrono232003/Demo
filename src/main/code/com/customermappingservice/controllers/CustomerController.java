@@ -54,7 +54,6 @@ public class CustomerController {
     public static Route handlePostCustomer = (Request request, Response response) -> {
         try {
             Gson gson = new Gson();
-            ApiResponse apiResponse = new ApiResponse();
             if (request.body().isEmpty()) {
                 return buildResponse(response, HttpStatus.BAD_REQUEST, JsonDBConstants.MISSING_REQUEST_BODY);
             }

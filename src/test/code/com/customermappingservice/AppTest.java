@@ -69,7 +69,7 @@ public class AppTest {
 
         //drop the collection created for the test
         JsonDBTemplate jsonDBTemplate = new JsonDBTemplate(JsonDBConstants.JSONDB_DBFILESLOCATION, JsonDBConstants.JSONDB_BASEMODELSPACKAGE, null);
-        //CustomerController.dropCollection(jsonDBTemplate);
+        CustomerController.dropCollection(jsonDBTemplate);
 
         System.out.println(response.body());
         Gson gson = new Gson();
